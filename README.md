@@ -105,6 +105,18 @@ flask make-admin tucorreo@ejemplo.com
 
 ---
 
+## Tests
+
+```powershell
+pytest                 # toda la suite (BD de test en memoria, separada)
+pytest -v              # mostrando el nombre de cada test
+pytest tests/test_registration.py            # un archivo
+pytest tests/test_registration.py::test_capacity_full_blocks_second_user  # un test
+```
+
+Los tests usan la config `testing` (SQLite en memoria) y una BD nueva por test,
+así que no tocan tu base de datos de desarrollo.
+
 ## Arquitectura: MVC + capa de servicios
 
 El proyecto sigue **Modelo-Vista-Controlador**, el patrón clásico para diseñar
@@ -159,4 +171,6 @@ controlador elige una `Vista` que genera el HTML.
 - [x] **(d)** Comunidades + feed (likes/comentarios con JS vanilla).
 - [x] **(e)** Eventos + inscripciones con control de aforo.
 - [x] **(f)** Panel de administración.
-- [ ] **(g)** Tests.
+- [x] **(g)** Tests con pytest.
+
+**MVP (fase 1) completo.** 🎉

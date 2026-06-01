@@ -27,3 +27,10 @@ select = ["E", "W", "F", "I", "B", "UP"]
 [tool.ruff.format]
 # Comillas dobles por defecto (estilo consistente, como hace Black).
 quote-style = "double"
+
+[tool.pytest.ini_options]
+# Dónde buscar los tests y qué patrón de nombre tienen.
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+# -q = salida compacta. Cambia a -v si quieres ver cada test por su nombre.
+addopts = "-q"
