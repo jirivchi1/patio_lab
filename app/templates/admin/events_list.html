@@ -1,0 +1,37 @@
+{# Listado de eventos en el admin (todos, incluidos borradores). #}
+{% extends "base.html" %}
+
+{% block title %}Eventos (admin) — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <div class="admin-header">
+    <h1>Eventos</h1>
+    <a class="btn" href="{{ url_for('admin.event_new') }}">+ Nuevo evento</a>
+  </div>
+
+  {% if events %}
+    <table class="admin-table">
+      <thead>
+        <tr><th>Título</th><th>Fecha</th><th>Estado</th><th>Aforo</th><th>Precio</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for event in events %}
+          <tr>
+            <td>{{ event.title }}</td>
+            <td>{{ event.starts_at.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td><span class="badge">{{ event.status }}</span></td>
+            <td>{{ event.capacity }}</td>
+            <td>{{ event.price_cents|eur }}</td>
+            <td>
+              <a href="{{ url_for('admin.event_edit', event_id=event.id) }}">Editar</a>
+              ·
+              <a href="{{ url_for('admin.event_registrations', event_id=event.id) }}">Inscripciones</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="empty">No hay eventos todavía.</p>
+  {% endif %}
+{% endblock %}

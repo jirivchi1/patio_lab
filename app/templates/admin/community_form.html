@@ -1,0 +1,21 @@
+{# Formulario de crear/editar comunidad. Reutiliza el macro render_field. #}
+{% extends "base.html" %}
+{% from "_macros.html" import render_field %}
+
+{% block title %}{{ title }} — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="admin-form">
+    <h1>{{ title }}</h1>
+    <form method="post" novalidate>
+      {{ form.hidden_tag() }}  {# token CSRF #}
+      {{ render_field(form.name) }}
+      {{ render_field(form.description) }}
+      {{ render_field(form.cover_image) }}
+      {{ render_field(form.is_paid) }}
+      {{ render_field(form.price) }}
+      {{ form.submit(class="btn") }}
+      <a class="nav-link" href="{{ url_for('admin.communities_list') }}">Cancelar</a>
+    </form>
+  </section>
+{% endblock %}

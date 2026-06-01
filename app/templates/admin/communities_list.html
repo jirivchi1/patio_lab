@@ -1,0 +1,32 @@
+{# Listado de comunidades en el admin, con acción de editar. #}
+{% extends "base.html" %}
+
+{% block title %}Comunidades (admin) — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <div class="admin-header">
+    <h1>Comunidades</h1>
+    <a class="btn" href="{{ url_for('admin.community_new') }}">+ Nueva comunidad</a>
+  </div>
+
+  {% if communities %}
+    <table class="admin-table">
+      <thead>
+        <tr><th>Nombre</th><th>Slug</th><th>Pago</th><th>Miembros</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for community in communities %}
+          <tr>
+            <td>{{ community.name }}</td>
+            <td><code>{{ community.slug }}</code></td>
+            <td>{% if community.is_paid %}{{ community.price_cents|eur }}{% else %}Gratis{% endif %}</td>
+            <td>{{ community.memberships|length }}</td>
+            <td><a href="{{ url_for('admin.community_edit', community_id=community.id) }}">Editar</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="empty">No hay comunidades todavía.</p>
+  {% endif %}
+{% endblock %}

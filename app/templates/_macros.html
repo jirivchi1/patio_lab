@@ -1,0 +1,30 @@
+{# ===========================================================================
+   _macros.html — "funciones" reutilizables de plantilla (macros de Jinja).
+
+   Un macro es como una función: recibe argumentos y devuelve HTML. Lo usamos
+   para no repetir la misma estructura (etiqueta + campo + errores) en cada uno
+   de los muchos campos de los formularios del admin.
+
+   Se usa así en otra plantilla:
+     - importar:  llave-porcentaje from "_macros.html" import render_field
+     - invocar:   doble-llave render_field(form.name) doble-llave
+=========================================================================== #}
+
+{% macro render_field(field) %}
+  {% if field.type == 'BooleanField' %}
+    {# Las casillas (checkbox) van con la etiqueta a la derecha, en línea. #}
+    <div class="field-check">
+      {{ field() }} {{ field.label }}
+    </div>
+  {% else %}
+    {# El resto (texto, área, número, fecha, desplegable) van con la etiqueta
+       encima y el campo debajo, ocupando el ancho. #}
+    <div class="field">
+      {{ field.label }}
+      {{ field(class="input") }}
+      {% for error in field.errors %}
+        <p class="field-error">{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endmacro %}

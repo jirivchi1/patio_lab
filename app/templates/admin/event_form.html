@@ -1,0 +1,28 @@
+{# Formulario de crear/editar evento. Muchos campos, todos vía render_field. #}
+{% extends "base.html" %}
+{% from "_macros.html" import render_field %}
+
+{% block title %}{{ title }} — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="admin-form">
+    <h1>{{ title }}</h1>
+    <form method="post" novalidate>
+      {{ form.hidden_tag() }}
+      {{ render_field(form.title) }}
+      {{ render_field(form.community) }}
+      {{ render_field(form.speaker) }}
+      {{ render_field(form.description) }}
+      {{ render_field(form.starts_at) }}
+      {{ render_field(form.ends_at) }}
+      {{ render_field(form.capacity) }}
+      {{ render_field(form.price) }}
+      {{ render_field(form.includes_bbq) }}
+      {{ render_field(form.lodging_available) }}
+      {{ render_field(form.location) }}
+      {{ render_field(form.status) }}
+      {{ form.submit(class="btn") }}
+      <a class="nav-link" href="{{ url_for('admin.events_list') }}">Cancelar</a>
+    </form>
+  </section>
+{% endblock %}

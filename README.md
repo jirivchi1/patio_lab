@@ -89,13 +89,19 @@ Para ver comunidades y un feed con contenido sin crearlo a mano:
 flask seed-demo
 ```
 
-Crea un usuario demo, tres comunidades, un ponente y dos eventos publicados.
+Crea un usuario demo, un admin, tres comunidades, un ponente y dos eventos.
 Puedes entrar con:
 
-- **Email:** `ana@patiolab.es`
-- **Contraseña:** `demo1234`
+- **Usuario normal:** `ana@patiolab.es` / `demo1234`
+- **Administrador:** `admin@patiolab.es` / `admin1234` (ve el panel en `/admin`)
 
 El comando es idempotente: ejecutarlo varias veces no duplica nada.
+
+Para dar permisos de admin a tu propia cuenta real:
+
+```powershell
+flask make-admin tucorreo@ejemplo.com
+```
 
 ---
 
@@ -152,5 +158,5 @@ controlador elige una `Vista` que genera el HTML.
 - [x] **(c)** Auth (registro/login/logout) + plantilla base con el CSS de marca.
 - [x] **(d)** Comunidades + feed (likes/comentarios con JS vanilla).
 - [x] **(e)** Eventos + inscripciones con control de aforo.
-- [ ] **(f)** Panel de administración.
+- [x] **(f)** Panel de administración.
 - [ ] **(g)** Tests.

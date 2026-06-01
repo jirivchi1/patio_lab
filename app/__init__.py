@@ -60,6 +60,7 @@ def create_app(config_name: str | None = None) -> Flask:
     # 5) Registrar los controladores (los módulos de rutas). Cada uno expone un
     #    Blueprint que aquí "montamos" en la app. Iremos sumando communities,
     #    events, admin... por fases.
+    from .controllers.admin_controller import admin_bp
     from .controllers.auth_controller import auth_bp
     from .controllers.communities_controller import communities_bp
     from .controllers.events_controller import events_bp
@@ -71,6 +72,8 @@ def create_app(config_name: str | None = None) -> Flask:
     app.register_blueprint(communities_bp)
     app.register_blueprint(events_bp)
     app.register_blueprint(profile_bp)
+    # url_prefix hace que TODAS las rutas del admin cuelguen de /admin/...
+    app.register_blueprint(admin_bp, url_prefix="/admin")
 
     # Filtro de plantilla "eur": en Jinja podremos escribir {{ precio_cents|eur }}
     # para mostrar "15,00 €". Registrar el filtro aquí lo deja disponible en TODAS

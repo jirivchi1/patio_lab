@@ -528,3 +528,93 @@ body {
 .plain-list li {
   padding: 0.4rem 0;
 }
+
+/* ===========================================================================
+   PANEL DE ADMINISTRACIÓN (Fase f)
+   =========================================================================== */
+
+/* Resaltamos el enlace "Admin" de la nav para distinguirlo. */
+.nav-admin {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* Cabecera de las páginas de listado: título a la izquierda, botón a la derecha. */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+/* Tarjetas de contadores del dashboard. */
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
+}
+.admin-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  text-align: center;
+  color: var(--color-muted);
+  box-shadow: var(--shadow);
+}
+.admin-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+/* --- Tablas del admin ------------------------------------------------------- */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse; /* sin huecos entre bordes de celdas */
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden; /* para que el radio recorte las esquinas de la tabla */
+}
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 0.6rem var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+.admin-table thead th {
+  background-color: var(--color-bg);
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+.admin-table tbody tr:last-child td {
+  border-bottom: none; /* la última fila sin línea, queda más limpio */
+}
+
+/* --- Formularios del admin -------------------------------------------------- */
+.admin-form {
+  max-width: 560px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+}
+.admin-form h1 {
+  margin-top: 0;
+  color: var(--color-primary-dark);
+}
+/* Los <select> y <input type=datetime-local> heredan el estilo .input, pero el
+   navegador les pone su propia altura; igualamos un poco el aspecto. */
+.admin-form select.input,
+.admin-form input.input {
+  height: auto;
+}

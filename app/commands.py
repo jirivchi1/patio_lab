@@ -35,6 +35,14 @@ def register_commands(app: Flask) -> None:
         else:
             click.echo("Usuario demo ya existía (no se duplica).")
 
+        # 1b) Usuario ADMIN (para entrar al panel de administración).
+        admin_email = "admin@patiolab.es"
+        if db.session.scalar(db.select(User).filter_by(email=admin_email)) is None:
+            admin = User(name="Admin", email=admin_email, role=UserRole.admin)
+            admin.set_password("admin1234")
+            db.session.add(admin)
+            click.echo(f"Usuario admin creado: {admin_email} / admin1234")
+
         # 2) Comunidades de ejemplo (name, slug, descripción).
         seed_communities = [
             ("Permacultura", "permacultura",
@@ -118,3 +126,19 @@ def register_commands(app: Flask) -> None:
 
         db.session.commit()
         click.echo("Datos de ejemplo listos.")
+
+    @app.cli.command("make-admin")
+    @click.argument("email")
+    def make_admin(email: str) -> None:
+        """Asciende a admin al usuario con ese EMAIL.
+
+        Uso: flask make-admin tucorreo@ejemplo.com
+        Útil para darte permisos de administrador a tu propia cuenta real.
+        """
+        user = db.session.scalar(db.select(User).filter_by(email=email.strip().lower()))
+        if user is None:
+            click.echo(f"No existe ningún usuario con el email {email}.")
+            return
+        user.role = UserRole.admin
+        db.session.commit()
+        click.echo(f"{email} ahora es admin.")

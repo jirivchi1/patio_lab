@@ -1,0 +1,23 @@
+{# ===========================================================================
+   dashboard.html — portada del panel de administración.
+=========================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}Administración — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <h1>Panel de administración</h1>
+
+  {# Tarjetas con los contadores principales. #}
+  <div class="admin-cards">
+    <div class="admin-card"><span class="admin-number">{{ stats.communities }}</span> comunidades</div>
+    <div class="admin-card"><span class="admin-number">{{ stats.events }}</span> eventos</div>
+    <div class="admin-card"><span class="admin-number">{{ stats.users }}</span> usuarios</div>
+    <div class="admin-card"><span class="admin-number">{{ stats.registrations }}</span> inscripciones</div>
+  </div>
+
+  <div class="admin-actions">
+    <a class="btn" href="{{ url_for('admin.communities_list') }}">Gestionar comunidades</a>
+    <a class="btn" href="{{ url_for('admin.events_list') }}">Gestionar eventos</a>
+  </div>
+{% endblock %}
