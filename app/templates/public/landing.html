@@ -1,14 +1,12 @@
 {# ===========================================================================
    landing.html — la página de inicio pública.
 
-   "extends" dice: usa base.html como esqueleto. Luego rellenamos sus bloques.
-   En esta Fase (a) el contenido es estático: su único objetivo es demostrar que
-   la app arranca y se ve. En fases siguientes mostraremos aquí los próximos
-   eventos reales sacados de la base de datos.
+   Ahora recibe `upcoming_events`: los próximos eventos publicados (máx. 3), que
+   mostramos para enganchar al visitante. Si no hay, simplemente no se pinta esa
+   sección.
 =========================================================================== #}
 {% extends "base.html" %}
 
-{# Sobrescribimos el título de la pestaña para esta página concreta. #}
 {% block title %}{{ config.BRAND_NAME }} — Comunidad y eventos en el campo{% endblock %}
 
 {% block content %}
@@ -18,9 +16,24 @@
       Una comunidad que se reúne de verdad: charlas y talleres en el campo,
       cerca de Elche, que terminan en barbacoa.
     </p>
-    <p class="hero-note">
-      🚧 Estamos construyendo la plataforma. Esto es la Fase (a): la app ya
-      arranca y se ve. Pronto habrá comunidades, foro y eventos.
-    </p>
   </section>
+
+  {% if upcoming_events %}
+    <section class="home-events">
+      <h2>Próximos eventos</h2>
+      <div class="event-grid">
+        {% for event in upcoming_events %}
+          <a class="event-card" href="{{ url_for('events.detail', slug=event.slug) }}">
+            <h3>{{ event.title }}</h3>
+            <p class="event-when">{{ event.starts_at.strftime('%d/%m/%Y · %H:%M') }}</p>
+            <p class="event-community">{{ event.community.name }}</p>
+            <div class="event-card-footer">
+              <span class="event-price">{{ event.price_cents|eur }}</span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+      <p><a href="{{ url_for('events.list_events') }}">Ver todos los eventos →</a></p>
+    </section>
+  {% endif %}
 {% endblock %}

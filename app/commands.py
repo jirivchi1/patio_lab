@@ -6,11 +6,14 @@ crear todo a mano. Es IDEMPOTENTE: si los datos ya existen, no los duplica, así
 que puedes ejecutarlo las veces que quieras sin miedo.
 """
 
+from datetime import UTC, datetime, timedelta
+
 import click
 from flask import Flask
 
 from app.extensions import db
-from app.models import Community, Like, Membership, Post, User
+from app.models import Community, Event, Like, Membership, Post, User
+from app.models.enums import EventStatus, UserRole
 
 
 def register_commands(app: Flask) -> None:
@@ -73,6 +76,45 @@ def register_commands(app: Flask) -> None:
             db.session.flush()
             db.session.add(Like(post_id=post.id, user_id=user.id))
             click.echo("Publicación de ejemplo creada.")
+
+        # 4) Un ponente (rol speaker) y un par de eventos publicados.
+        speaker_email = "marta@patiolab.es"
+        speaker = db.session.scalar(db.select(User).filter_by(email=speaker_email))
+        if speaker is None:
+            speaker = User(name="Marta Ríos", email=speaker_email, role=UserRole.speaker)
+            speaker.set_password("demo1234")
+            db.session.add(speaker)
+            db.session.flush()
+            click.echo(f"Ponente demo creado: {speaker_email}")
+
+        impresion3d = communities[1]
+        # (comunidad, título, slug, descripción, días_desde_hoy, aforo, precio_cents, bbq, pernocta)
+        seed_events = [
+            (permacultura, "Taller de compostaje y huerto de temporada", "taller-compostaje",
+             "Monta un compostero y planifica el huerto. Termina en barbacoa.",
+             14, 20, 1500, True, False),
+            (impresion3d, "Monta tu primera impresora 3D", "monta-impresora-3d",
+             "De las piezas al primer print. La cena la ponemos nosotros.",
+             30, 12, 2500, True, True),
+        ]
+        for community, title, slug, description, days, capacity, price, bbq, lodging in seed_events:
+            event = db.session.scalar(db.select(Event).filter_by(slug=slug))
+            if event is None:
+                event = Event(
+                    community_id=community.id,
+                    speaker_id=speaker.id,
+                    title=title,
+                    slug=slug,
+                    description=description,
+                    starts_at=datetime.now(UTC) + timedelta(days=days),
+                    capacity=capacity,
+                    price_cents=price,
+                    includes_bbq=bbq,
+                    lodging_available=lodging,
+                    status=EventStatus.published,
+                )
+                db.session.add(event)
+                click.echo(f"Evento creado: {title}")
 
         db.session.commit()
         click.echo("Datos de ejemplo listos.")

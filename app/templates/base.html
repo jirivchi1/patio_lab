@@ -33,12 +33,14 @@
     <a class="brand" href="{{ url_for('public.landing') }}">{{ config.BRAND_NAME }}</a>
 
     <nav class="nav">
-      {# Enlace visible siempre al listado de comunidades. #}
+      {# Enlaces visibles siempre. #}
       <a class="nav-link" href="{{ url_for('communities.list_communities') }}">Comunidades</a>
+      <a class="nav-link" href="{{ url_for('events.list_events') }}">Eventos</a>
 
       {# current_user lo aporta Flask-Login en TODAS las plantillas. is_authenticated
          es True si hay sesión iniciada. Según eso, mostramos unos enlaces u otros. #}
       {% if current_user.is_authenticated %}
+        <a class="nav-link" href="{{ url_for('profile.profile') }}">Mi perfil</a>
         <span class="nav-greeting">Hola, {{ current_user.name }}</span>
         <a class="nav-link" href="{{ url_for('auth.logout') }}">Salir</a>
       {% else %}

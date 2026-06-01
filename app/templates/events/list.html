@@ -1,0 +1,52 @@
+{# ===========================================================================
+   list.html — próximos eventos publicados, en tarjetas.
+
+   Recibe `events_info`: una lista de diccionarios { event, spots_left }, porque
+   las plazas libres no son un campo del evento, sino un cálculo que hace el
+   controlador (aforo menos inscritos confirmados).
+=========================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}Eventos — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <h1>Próximos eventos</h1>
+  <p class="page-intro">
+    Charlas y talleres en la finca, cerca de Elche. Cada uno termina en barbacoa.
+  </p>
+
+  {% if events_info %}
+    <div class="event-grid">
+      {% for info in events_info %}
+        {% set event = info.event %}
+        <a class="event-card" href="{{ url_for('events.detail', slug=event.slug) }}">
+          <h2>{{ event.title }}</h2>
+          <p class="event-when">{{ event.starts_at.strftime('%d/%m/%Y · %H:%M') }}</p>
+          <p class="event-community">{{ event.community.name }}</p>
+
+          {# Etiquetas (badges) con los rasgos del evento. #}
+          <div class="badges">
+            {% if event.includes_bbq %}<span class="badge badge-bbq">🔥 Barbacoa</span>{% endif %}
+            {% if event.lodging_available %}<span class="badge badge-lodging">🛏️ Pernocta</span>{% endif %}
+          </div>
+
+          <div class="event-card-footer">
+            {# spots_left: 0 -> "Completo"; si no, las plazas que quedan. #}
+            {% if info.spots_left > 0 %}
+              <span class="badge badge-spots">{{ info.spots_left }} plazas</span>
+            {% else %}
+              <span class="badge badge-full">Completo</span>
+            {% endif %}
+            {# El filtro |eur lo registramos en la factory: céntimos -> "15,00 €". #}
+            <span class="event-price">{{ event.price_cents|eur }}</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty">
+      No hay eventos próximos por ahora. Crea los de ejemplo con
+      <code>flask seed-demo</code> o, más adelante, desde el panel de administración.
+    </p>
+  {% endif %}
+{% endblock %}

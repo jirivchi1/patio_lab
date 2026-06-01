@@ -1,0 +1,77 @@
+{# ===========================================================================
+   detail.html — ficha completa de un evento + inscribirse / cancelar.
+
+   Recibe:
+     - event: el evento.
+     - spots_left: plazas libres (calculadas en el controlador).
+     - registration: la inscripción ACTIVA del usuario, o None.
+
+   Lógica de qué botón mostrar:
+     - No logueado            -> invitación a entrar.
+     - Logueado y ya inscrito -> estado + botón de cancelar.
+     - Logueado y hay plazas  -> botón de inscribirse.
+     - Logueado y completo     -> aviso de aforo lleno.
+=========================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}{{ event.title }} — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <article class="event-detail">
+    <h1>{{ event.title }}</h1>
+
+    {# Ficha de datos clave en una lista de definición (dt = término, dd = valor). #}
+    <dl class="event-facts">
+      <div><dt>Cuándo</dt><dd>{{ event.starts_at.strftime('%d/%m/%Y a las %H:%M') }}</dd></div>
+      <div><dt>Comunidad</dt>
+        <dd>
+          <a href="{{ url_for('communities.detail', slug=event.community.slug) }}">
+            {{ event.community.name }}
+          </a>
+        </dd>
+      </div>
+      {% if event.speaker %}
+        <div><dt>Ponente</dt><dd>{{ event.speaker.name }}</dd></div>
+      {% endif %}
+      <div><dt>Dónde</dt><dd>{{ event.location }}</dd></div>
+      <div><dt>Precio</dt><dd>{{ event.price_cents|eur }}</dd></div>
+      <div><dt>Plazas libres</dt><dd>{{ spots_left }} de {{ event.capacity }}</dd></div>
+    </dl>
+
+    <div class="badges">
+      {% if event.includes_bbq %}<span class="badge badge-bbq">🔥 Incluye barbacoa</span>{% endif %}
+      {% if event.lodging_available %}<span class="badge badge-lodging">🛏️ Pernocta disponible</span>{% endif %}
+    </div>
+
+    {% if event.description %}
+      <p class="event-description">{{ event.description }}</p>
+    {% endif %}
+
+    {# --- Zona de acción: inscribirse / cancelar / avisos --- #}
+    <div class="event-action">
+      {% if not current_user.is_authenticated %}
+        <p><a href="{{ url_for('auth.login') }}">Entra</a> para inscribirte en este evento.</p>
+
+      {% elif registration %}
+        {# Ya inscrito: mostramos estado y permitimos cancelar. #}
+        <p class="badge">Estás inscrito ✓</p>
+        <form method="post" action="{{ url_for('events.cancel', slug=event.slug) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-secondary" type="submit">Cancelar inscripción</button>
+        </form>
+
+      {% elif spots_left > 0 %}
+        {# Hay plazas y no está inscrito: botón de inscribirse. #}
+        <form method="post" action="{{ url_for('events.register', slug=event.slug) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn" type="submit">
+            Inscribirme{% if event.price_cents %} · {{ event.price_cents|eur }}{% endif %}
+          </button>
+        </form>
+
+      {% else %}
+        <p class="badge badge-full">Evento completo</p>
+      {% endif %}
+    </div>
+  </article>
+{% endblock %}

@@ -15,6 +15,8 @@ como "el departamento público" del ayuntamiento que es la web.
 
 from flask import Blueprint, render_template
 
+from app.services import event_service
+
 # Creamos el blueprint (el "departamento"). Argumentos:
 #   "public"  -> nombre interno; se usa en url_for, p.ej. url_for("public.landing").
 #   __name__  -> ayuda a Flask a localizar plantillas y archivos estáticos.
@@ -25,10 +27,10 @@ public_bp = Blueprint("public", __name__)
 def landing():
     """Página de inicio pública de Patio Lab.
 
-    `render_template` busca el archivo en app/templates/ y lo devuelve como HTML.
-    Más adelante le pasaremos los próximos eventos para mostrarlos aquí.
+    Muestra los próximos eventos (como mucho 3) para enganchar al visitante.
     """
-    return render_template("public/landing.html")
+    upcoming_events = event_service.list_upcoming_events(limit=3)
+    return render_template("public/landing.html", upcoming_events=upcoming_events)
 
 
 @public_bp.route("/health")

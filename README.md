@@ -89,7 +89,8 @@ Para ver comunidades y un feed con contenido sin crearlo a mano:
 flask seed-demo
 ```
 
-Crea un usuario demo y tres comunidades. Puedes entrar con:
+Crea un usuario demo, tres comunidades, un ponente y dos eventos publicados.
+Puedes entrar con:
 
 - **Email:** `ana@patiolab.es`
 - **Contraseña:** `demo1234`
@@ -150,6 +151,6 @@ controlador elige una `Vista` que genera el HTML.
 - [x] **(b)** Modelos + migración inicial.
 - [x] **(c)** Auth (registro/login/logout) + plantilla base con el CSS de marca.
 - [x] **(d)** Comunidades + feed (likes/comentarios con JS vanilla).
-- [ ] **(e)** Eventos + inscripciones con control de aforo.
+- [x] **(e)** Eventos + inscripciones con control de aforo.
 - [ ] **(f)** Panel de administración.
 - [ ] **(g)** Tests.

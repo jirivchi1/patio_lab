@@ -376,3 +376,155 @@ body {
   flex: 1; /* el textarea ocupa todo el ancho que pueda; el botón, lo mínimo */
   resize: vertical;
 }
+
+/* ===========================================================================
+   EVENTOS E INSCRIPCIONES (Fase e)
+   =========================================================================== */
+
+/* Botón secundario: mismo tamaño que .btn pero discreto (para "Cancelar"). */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+}
+.btn-secondary:hover {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* --- Etiquetas (badges) de evento ------------------------------------------
+   Reutilizamos la .badge base (pastilla redondeada) y solo cambiamos el color
+   con clases modificadoras según el rasgo. */
+.badges {
+  display: flex;
+  flex-wrap: wrap; /* si no caben, saltan a la línea siguiente */
+  gap: var(--space-sm);
+  margin: var(--space-sm) 0;
+}
+.badge-bbq {
+  background-color: #f7e7df;
+  color: #8a3c16;
+}
+.badge-lodging {
+  background-color: #e6eef2;
+  color: #2f5063;
+}
+.badge-spots {
+  background-color: #eef3e2;
+  color: var(--color-primary-dark);
+}
+.badge-full {
+  background-color: #efe3e0;
+  color: #8a3c16;
+}
+
+/* --- Rejilla y tarjetas de evento ------------------------------------------ */
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-md);
+}
+.event-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  text-decoration: none;
+  color: var(--color-text);
+  box-shadow: var(--shadow);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.event-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-primary);
+}
+.event-card h2,
+.event-card h3 {
+  margin: 0 0 var(--space-sm);
+  color: var(--color-primary-dark);
+  font-size: 1.15rem;
+}
+.event-when {
+  font-weight: 600;
+  margin: 0;
+}
+.event-community {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: 0.2rem 0 var(--space-sm);
+}
+/* El pie de la tarjeta se pega abajo (margin-top:auto) aunque el texto sea corto,
+   así todas las tarjetas alinean precio/plazas a la misma altura. */
+.event-card-footer {
+  margin-top: auto;
+  padding-top: var(--space-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.event-price {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+/* --- Ficha de un evento ----------------------------------------------------- */
+.event-detail h1 {
+  color: var(--color-primary-dark);
+}
+/* Lista de datos clave: cada par término/valor en su fila. */
+.event-facts {
+  margin: var(--space-lg) 0;
+}
+.event-facts > div {
+  display: flex;
+  gap: var(--space-md);
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.event-facts dt {
+  width: 130px;
+  flex-shrink: 0; /* la columna de términos no se encoge */
+  color: var(--color-muted);
+  font-weight: 600;
+}
+.event-facts dd {
+  margin: 0;
+}
+.event-description {
+  white-space: pre-wrap; /* respeta saltos de línea del texto */
+  margin: var(--space-lg) 0;
+}
+.event-action {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+/* --- Sección de eventos en la landing --------------------------------------- */
+.home-events {
+  margin-top: var(--space-xl);
+}
+.home-events h2 {
+  color: var(--color-primary-dark);
+}
+
+/* --- Perfil ----------------------------------------------------------------- */
+.profile-section {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+.profile-section h2 {
+  color: var(--color-primary-dark);
+  font-size: 1.2rem;
+}
+/* Lista sin viñetas, para listados simples (comunidades, eventos del perfil). */
+.plain-list {
+  list-style: none;
+  padding: 0;
+}
+.plain-list li {
+  padding: 0.4rem 0;
+}

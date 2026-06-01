@@ -62,11 +62,22 @@ def create_app(config_name: str | None = None) -> Flask:
     #    events, admin... por fases.
     from .controllers.auth_controller import auth_bp
     from .controllers.communities_controller import communities_bp
+    from .controllers.events_controller import events_bp
+    from .controllers.profile_controller import profile_bp
     from .controllers.public_controller import public_bp
 
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(communities_bp)
+    app.register_blueprint(events_bp)
+    app.register_blueprint(profile_bp)
+
+    # Filtro de plantilla "eur": en Jinja podremos escribir {{ precio_cents|eur }}
+    # para mostrar "15,00 €". Registrar el filtro aquí lo deja disponible en TODAS
+    # las plantillas sin importar nada en cada una.
+    from .utils.formatting import format_price
+
+    app.add_template_filter(format_price, "eur")
 
     # 6) Registrar los comandos personalizados de la CLI (flask seed-demo, etc.).
     from .commands import register_commands

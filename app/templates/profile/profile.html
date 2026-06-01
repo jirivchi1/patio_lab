@@ -1,0 +1,53 @@
+{# ===========================================================================
+   profile.html — la página "mía": mis comunidades y mis inscripciones.
+=========================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}Mi perfil — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <h1>Hola, {{ current_user.name }}</h1>
+  <p class="page-intro">{{ current_user.email }}</p>
+
+  <section class="profile-section">
+    <h2>Mis comunidades</h2>
+    {% if memberships %}
+      <ul class="plain-list">
+        {% for membership in memberships %}
+          <li>
+            <a href="{{ url_for('communities.detail', slug=membership.community.slug) }}">
+              {{ membership.community.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">
+        Aún no perteneces a ninguna comunidad.
+        <a href="{{ url_for('communities.list_communities') }}">Explóralas</a>.
+      </p>
+    {% endif %}
+  </section>
+
+  <section class="profile-section">
+    <h2>Mis eventos</h2>
+    {% if registrations %}
+      <ul class="plain-list">
+        {% for registration in registrations %}
+          {% set event = registration.event %}
+          <li>
+            <a href="{{ url_for('events.detail', slug=event.slug) }}">{{ event.title }}</a>
+            — {{ event.starts_at.strftime('%d/%m/%Y · %H:%M') }}
+            {# El valor del enum se muestra como texto (gracias a StrEnum). #}
+            <span class="badge badge-spots">{{ registration.payment_status }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">
+        Todavía no te has inscrito a ningún evento.
+        <a href="{{ url_for('events.list_events') }}">Mira los próximos</a>.
+      </p>
+    {% endif %}
+  </section>
+{% endblock %}
