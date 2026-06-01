@@ -1,0 +1,37 @@
+{# ===========================================================================
+   list.html — listado de todas las comunidades, en forma de "tarjetas".
+=========================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}Comunidades — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <h1>Comunidades</h1>
+  <p class="page-intro">
+    Grupos temáticos donde compartir, y desde los que nacen los eventos en la finca.
+  </p>
+
+  {% if communities %}
+    {# .community-grid es una rejilla (CSS grid) que coloca las tarjetas en
+       columnas que se adaptan al ancho de la pantalla. #}
+    <div class="community-grid">
+      {% for community in communities %}
+        {# Toda la tarjeta es un enlace a la ficha de la comunidad. #}
+        <a class="community-card" href="{{ url_for('communities.detail', slug=community.slug) }}">
+          <h2>{{ community.name }}</h2>
+          {% if community.description %}
+            <p>{{ community.description }}</p>
+          {% endif %}
+          <span class="community-meta">
+            {{ community.memberships|length }} miembros{% if community.is_paid %} · de pago{% endif %}
+          </span>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty">
+      Aún no hay comunidades. Crea las de ejemplo con <code>flask seed-demo</code>
+      o, más adelante, desde el panel de administración.
+    </p>
+  {% endif %}
+{% endblock %}

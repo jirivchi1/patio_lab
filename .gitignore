@@ -1,0 +1,27 @@
+# --- Secretos y entorno ---
+.env
+
+# --- Entorno virtual de Python ---
+.venv/
+venv/
+
+# --- Bases de datos locales de SQLite ---
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# --- Cachés de Python ---
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# --- Editores / sistema ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Configuración LOCAL de Claude Code (permisos personales de cada máquina) ---
+.claude/settings.local.json

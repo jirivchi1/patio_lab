@@ -1,0 +1,378 @@
+/* ===========================================================================
+   main.css — estilos de marca de Patio Lab.
+
+   Usa las variables de variables.css (que se carga antes en base.html). El CSS
+   está agrupado por secciones y comentado para que se siga de arriba abajo.
+   =========================================================================== */
+
+/* --- Reseteo mínimo ---------------------------------------------------------
+   box-sizing: border-box hace que el padding NO agrande el ancho de los
+   elementos: si pones width 200px, son 200px aunque añadas relleno. Es lo más
+   intuitivo al maquetar. Lo aplicamos a todo con el selector universal *. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-base);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.6;
+  /* Flex en columna para que el pie quede abajo aunque haya poco contenido. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- Cabecera ---------------------------------------------------------------
+   display:flex pone marca y navegación en la misma fila.
+   justify-content: space-between los empuja a los extremos opuestos.
+   align-items: center los centra verticalmente. */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-md) var(--space-lg);
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-primary-dark);
+  text-decoration: none;
+}
+
+/* La navegación: sus hijos también en flex, con un hueco (gap) entre ellos. */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.nav-link {
+  color: var(--color-muted);
+  text-decoration: none;
+  font-weight: 600;
+}
+.nav-link:hover {
+  color: var(--color-primary-dark);
+}
+
+.nav-greeting {
+  color: var(--color-muted);
+}
+
+/* --- Botones ----------------------------------------------------------------
+   Una sola clase .btn para todos los botones y enlaces-botón, así son
+   coherentes en toda la web. .btn-small es una variante más pequeña. */
+.btn {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit; /* que los <input type=submit> usen la misma fuente */
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease; /* cambio suave de color al pasar */
+}
+.btn:hover {
+  background-color: var(--color-primary-dark);
+}
+.btn-small {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+/* --- Zona principal --------------------------------------------------------- */
+.site-main {
+  flex: 1; /* crece y ocupa el espacio sobrante, empujando el footer abajo */
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto; /* centrado horizontal */
+  padding: var(--space-xl) var(--space-lg);
+}
+
+/* --- Mensajes flash ---------------------------------------------------------
+   Avisos de un solo uso. La clase base .flash da la forma; las modificadoras
+   .flash-success / .flash-error dan el color según la categoría. */
+.flashes {
+  margin-bottom: var(--space-lg);
+}
+.flash {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-sm);
+  border-left: 4px solid; /* franja de color a la izquierda (color lo da cada tipo) */
+}
+.flash-success {
+  background-color: #eef3e2;
+  border-left-color: var(--color-primary);
+  color: var(--color-primary-dark);
+}
+.flash-error {
+  background-color: #f7e7df;
+  border-left-color: var(--color-accent);
+  color: #8a3c16;
+}
+
+/* --- Hero (bloque de bienvenida de la landing) ------------------------------ */
+.hero h1 {
+  font-size: 2.25rem;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-md);
+}
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--color-muted);
+  margin-bottom: var(--space-lg);
+}
+.hero-note {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow);
+}
+
+/* --- Tarjeta de autenticación (login / registro) ---------------------------
+   Un recuadro centrado y estrecho: los formularios se leen mejor en columna
+   angosta que ocupando toda la pantalla. */
+.auth-card {
+  max-width: 420px;
+  margin: 0 auto;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+}
+.auth-card h1 {
+  margin-top: 0;
+  color: var(--color-primary-dark);
+}
+.auth-intro {
+  color: var(--color-muted);
+  margin-bottom: var(--space-lg);
+}
+.auth-alt {
+  margin-top: var(--space-lg);
+  font-size: 0.95rem;
+  color: var(--color-muted);
+}
+
+/* --- Campos de formulario ---------------------------------------------------
+   .field envuelve cada etiqueta+input. La etiqueta en bloque (display:block)
+   se pone encima del input; el input ocupa todo el ancho disponible. */
+.field {
+  margin-bottom: var(--space-md);
+}
+.field label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.input {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: #fff;
+}
+/* :focus = cuando el campo está seleccionado. Resaltamos el borde en verde. */
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* Casilla "recuérdame": casilla e etiqueta en la misma línea. */
+.field-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--space-md);
+}
+
+/* Errores de validación bajo cada campo, en color de acento. */
+.field-error {
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  margin: 0.25rem 0 0;
+}
+
+/* --- Pie -------------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-md) var(--space-lg);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ===========================================================================
+   COMUNIDADES Y FEED (Fase d)
+   =========================================================================== */
+
+.page-intro {
+  color: var(--color-muted);
+  margin-bottom: var(--space-lg);
+}
+.empty {
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* --- Rejilla de comunidades -------------------------------------------------
+   CSS Grid coloca las tarjetas en columnas automáticas. repeat(auto-fill,...)
+   crea tantas columnas de mínimo 240px como quepan; minmax evita que se
+   estrechen demasiado. Al encoger la ventana, las columnas se reorganizan solas. */
+.community-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-md);
+}
+.community-card {
+  display: block;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  text-decoration: none;
+  color: var(--color-text);
+  box-shadow: var(--shadow);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.community-card:hover {
+  transform: translateY(-2px); /* la tarjeta "sube" un poco al pasar el ratón */
+  border-color: var(--color-primary);
+}
+.community-card h2 {
+  margin: 0 0 var(--space-sm);
+  color: var(--color-primary-dark);
+  font-size: 1.2rem;
+}
+.community-meta {
+  display: block;
+  margin-top: var(--space-sm);
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* --- Cabecera de una comunidad ---------------------------------------------- */
+.community-header {
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+.member-count {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin-top: 0;
+}
+/* "badge": etiqueta pequeña tipo pastilla para "Ya eres miembro". */
+.badge {
+  display: inline-block;
+  background-color: #eef3e2;
+  color: var(--color-primary-dark);
+  border-radius: 999px; /* radio enorme = lados completamente redondeados */
+  padding: 0.2rem 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* --- Feed: formulario de publicar ------------------------------------------- */
+.post-form {
+  margin-bottom: var(--space-lg);
+}
+.post-form textarea {
+  margin-bottom: var(--space-sm);
+  resize: vertical; /* el usuario puede estirar el campo a lo alto, no a lo ancho */
+}
+
+/* --- Tarjeta de publicación ------------------------------------------------- */
+.post-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  box-shadow: var(--shadow);
+}
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-sm);
+}
+.post-date {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+.post-body {
+  margin: 0 0 var(--space-md);
+  /* Respeta los saltos de línea que escriba el usuario en el textarea. */
+  white-space: pre-wrap;
+}
+
+/* --- Botón de like ----------------------------------------------------------
+   Por defecto es un contorno discreto. Cuando tiene la clase .liked (la pone el
+   JavaScript al dar like), se rellena del color de acento. */
+.post-actions {
+  margin-bottom: var(--space-sm);
+}
+.like-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.25rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  transition: all 0.12s ease;
+}
+.like-btn:hover {
+  border-color: var(--color-accent);
+}
+.like-btn.liked {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+.like-static {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+/* --- Comentarios ------------------------------------------------------------ */
+.comment-list {
+  list-style: none; /* sin los puntos de lista por defecto */
+  padding: 0;
+  margin: 0 0 var(--space-sm);
+}
+.comment {
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.95rem;
+}
+/* Formulario de comentario: campo y botón en la misma fila. */
+.comment-form {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+.comment-form textarea {
+  flex: 1; /* el textarea ocupa todo el ancho que pueda; el botón, lo mínimo */
+  resize: vertical;
+}

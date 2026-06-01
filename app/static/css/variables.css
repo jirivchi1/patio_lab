@@ -1,0 +1,42 @@
+/* ===========================================================================
+   variables.css — la PALETA y los "tokens" de diseño de Patio Lab.
+
+   ¿Qué es esto? Las "custom properties" de CSS (variables que empiezan por --)
+   son valores con nombre que defines una vez y reutilizas en todo el sitio.
+   Si mañana quieres que el verde sea otro, lo cambias AQUÍ y cambia en toda la
+   web. Es la forma plana (sin Sass ni herramientas) de tener un tema coherente.
+
+   Las declaramos dentro de :root, que es el elemento raíz del documento (el
+   <html>). Así quedan disponibles globalmente para cualquier regla CSS.
+   =========================================================================== */
+:root {
+  /* --- Colores de marca: tono cálido, terroso, rural mediterráneo --- */
+  --color-bg:        #faf6f0;  /* fondo crema, como pared encalada al sol */
+  --color-surface:   #ffffff;  /* tarjetas y cabecera */
+  --color-text:      #2e2a26;  /* marrón muy oscuro, más cálido que el negro */
+  --color-muted:     #6b635a;  /* texto secundario, gris terroso */
+
+  --color-primary:   #7a8450;  /* verde oliva: campo, olivo, permacultura */
+  --color-primary-dark: #5f6840;/* el mismo verde, más oscuro (hover) */
+  --color-accent:    #c4622d;  /* teja/barro cocido: la barbacoa, el calor */
+
+  --color-border:    #e7ded3;  /* líneas suaves entre secciones */
+
+  /* --- Tipografía --- */
+  /* Usamos fuentes del sistema: cero descargas, carga instantánea y se ven
+     nativas en cada equipo. Más adelante podríamos añadir una fuente propia. */
+  --font-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* --- Espaciado --- */
+  /* Una escala de espacios con nombre evita números mágicos sueltos por el CSS
+     y mantiene los márgenes/paddings consistentes. */
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 4rem;
+
+  /* --- Otros --- */
+  --radius: 10px;                       /* esquinas redondeadas, aspecto amable */
+  --max-width: 880px;                   /* ancho máximo del contenido (legible) */
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* sombra sutil para dar relieve */
+}

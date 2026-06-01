@@ -1,0 +1,78 @@
+{# ===========================================================================
+   base.html — la plantilla "madre" de la que heredan todas las demás.
+
+   Jinja2 permite definir un esqueleto con "huecos" (bloques) que las páginas
+   hijas rellenan. Así el <head>, la cabecera y el pie se escriben UNA vez.
+
+   Recordatorio de la sintaxis de Jinja (sin escribir los símbolos literales
+   aquí dentro, porque cerrarían este propio comentario):
+     - llave-almohadilla  ... almohadilla-llave   -> comentario (no sale al HTML)
+     - doble-llave         ... doble-llave         -> imprime un valor
+     - llave-porcentaje    ... porcentaje-llave    -> lógica (bloques, if, for)
+=========================================================================== #}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {# Token CSRF accesible para el JavaScript. csrf_token() lo provee Flask-WTF.
+     Nuestras peticiones fetch (like, comentar) lo leerán de aquí y lo enviarán
+     en la cabecera X-CSRFToken, porque la protección CSRF cubre TODO POST, no
+     solo los formularios. #}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
+  <title>{% block title %}{{ config.BRAND_NAME }}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    {# La cabecera tiene dos zonas: la marca a la izquierda y la navegación a la
+       derecha. El CSS las separa con flexbox. #}
+    <a class="brand" href="{{ url_for('public.landing') }}">{{ config.BRAND_NAME }}</a>
+
+    <nav class="nav">
+      {# Enlace visible siempre al listado de comunidades. #}
+      <a class="nav-link" href="{{ url_for('communities.list_communities') }}">Comunidades</a>
+
+      {# current_user lo aporta Flask-Login en TODAS las plantillas. is_authenticated
+         es True si hay sesión iniciada. Según eso, mostramos unos enlaces u otros. #}
+      {% if current_user.is_authenticated %}
+        <span class="nav-greeting">Hola, {{ current_user.name }}</span>
+        <a class="nav-link" href="{{ url_for('auth.logout') }}">Salir</a>
+      {% else %}
+        <a class="nav-link" href="{{ url_for('auth.login') }}">Entrar</a>
+        <a class="btn btn-small" href="{{ url_for('auth.register') }}">Crear cuenta</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="site-main">
+    {# MENSAJES FLASH: avisos de un solo uso que el controlador "deja" con
+       flash(...) y que se muestran en la SIGUIENTE página. with_categories=true
+       nos da también la categoría ("success", "error") para colorearlos. #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {# Aquí cada página hija inyecta su contenido. #}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>{{ config.BRAND_NAME }} — Comunidad, no clientes.</p>
+  </footer>
+
+  {# Hueco para que cada página cargue su propio JavaScript al final del body
+     (al final = el HTML ya está cargado cuando el script se ejecuta). La mayoría
+     de páginas no rellenan este bloque y por tanto no cargan ningún JS. #}
+  {% block scripts %}{% endblock %}
+</body>
+</html>

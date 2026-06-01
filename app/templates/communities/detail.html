@@ -1,0 +1,99 @@
+{# ===========================================================================
+   detail.html — ficha de una comunidad: cabecera + feed.
+
+   Reglas de quién ve qué:
+     - Cualquiera ve la descripción y las publicaciones.
+     - Solo los MIEMBROS (is_member) ven el formulario de publicar y los
+       controles de like/comentar.
+     - Un visitante no logueado ve una invitación a entrar.
+=========================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}{{ community.name }} — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="community-header">
+    <h1>{{ community.name }}</h1>
+    <p class="member-count">{{ community.memberships|length }} miembros</p>
+    {% if community.description %}
+      <p>{{ community.description }}</p>
+    {% endif %}
+
+    {% if current_user.is_authenticated %}
+      {% if is_member %}
+        <p class="badge">Ya eres miembro ✓</p>
+      {% else %}
+        {# Formulario mínimo solo para el botón "Unirme". Lleva el token CSRF a
+           mano (no usamos un FlaskForm aquí porque no hay campos que validar). #}
+        <form method="post" action="{{ url_for('communities.join', slug=community.slug) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn" type="submit">Unirme a esta comunidad</button>
+        </form>
+      {% endif %}
+    {% else %}
+      <p><a href="{{ url_for('auth.login') }}">Entra</a> para unirte y participar.</p>
+    {% endif %}
+  </section>
+
+  <section class="feed">
+    {% if is_member %}
+      {# Crear publicación: envío de formulario NORMAL (recarga la página). #}
+      <form class="post-form" method="post"
+            action="{{ url_for('communities.create_post', slug=community.slug) }}">
+        {{ form.hidden_tag() }}
+        {{ form.body(class="input", rows="3",
+                     placeholder="Comparte algo con la comunidad...") }}
+        {{ form.submit(class="btn") }}
+      </form>
+    {% endif %}
+
+    {% for post in posts %}
+      <article class="post-card">
+        <header class="post-meta">
+          <strong>{{ post.author.name }}</strong>
+          <span class="post-date">{{ post.created_at.strftime('%d/%m/%Y %H:%M') }}</span>
+        </header>
+        <p class="post-body">{{ post.body }}</p>
+
+        <div class="post-actions">
+          {% if is_member %}
+            {# El botón de like. data-post-id se lo lee el JavaScript. La clase
+               "liked" (si ya lo likeaste) lo pinta encendido. #}
+            <button class="like-btn {% if post.id in liked_post_ids %}liked{% endif %}"
+                    data-post-id="{{ post.id }}">
+              ♥ <span class="like-count">{{ post.likes|length }}</span>
+            </button>
+          {% else %}
+            {# Visitantes no miembros: solo ven el número, sin botón. #}
+            <span class="like-static">♥ {{ post.likes|length }}</span>
+          {% endif %}
+        </div>
+
+        {# Lista de comentarios. El JavaScript añadirá nuevos <li> aquí. #}
+        <ul class="comment-list">
+          {% for comment in post.comments %}
+            <li class="comment"><strong>{{ comment.author.name }}</strong> {{ comment.body }}</li>
+          {% endfor %}
+        </ul>
+
+        {% if is_member %}
+          {# Formulario de comentario. NO tiene action: el JavaScript intercepta
+             el envío y lo manda por fetch. data-post-id le dice a qué post. #}
+          <form class="comment-form" data-post-id="{{ post.id }}">
+            <textarea class="input" rows="1" placeholder="Escribe un comentario..."></textarea>
+            <button class="btn btn-small" type="submit">Comentar</button>
+          </form>
+        {% endif %}
+      </article>
+    {% else %}
+      <p class="empty">
+        Todavía no hay publicaciones.{% if is_member %} ¡Sé el primero!{% endif %}
+      </p>
+    {% endfor %}
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  {# Solo esta página carga el JS del feed (likes y comentarios). #}
+  <script src="{{ url_for('static', filename='js/feed.js') }}"></script>
+{% endblock %}

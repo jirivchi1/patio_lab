@@ -1,0 +1,24 @@
+# =============================================================================
+# Patio Lab — dependencias de la aplicación
+# -----------------------------------------------------------------------------
+# Pocas y entendidas. Cada una está explicada en el README.
+# Usamos ">=" (versión mínima) en vez de "==" (versión exacta) para que pip
+# resuelva versiones compatibles entre sí sin pelearse. Cuando el proyecto sea
+# más serio, congelaremos versiones exactas con `pip freeze`.
+# =============================================================================
+
+Flask>=3.0            # Framework web: enruta peticiones y devuelve HTML.
+Flask-SQLAlchemy>=3.1 # ORM: clases Python <-> tablas SQL (sin escribir SQL a mano).
+Flask-Migrate>=4.0    # Migraciones con Alembic: versiona cambios del esquema.
+Flask-Login>=0.6      # Sesiones: saber quién está logueado y proteger rutas.
+Flask-WTF>=1.2        # Formularios con validación y CSRF activado (seguridad).
+email-validator>=2.0  # Que WTForms valide que un email es un email de verdad.
+python-dotenv>=1.0    # Cargar el archivo .env (secretos fuera del código).
+
+# --- Solo para desarrollo / calidad (no son de la app en sí) ---
+pytest>=8.0           # Framework de tests.
+ruff>=0.5             # Lint + formato (un solo binario, muy rápido).
+
+# --- Producción (anotadas, NO se instalan todavía) ---
+# gunicorn>=22.0      # Servidor WSGI para producción (en Windows no aplica).
+# psycopg2-binary>=2.9 # Driver de PostgreSQL para el cambio SQLite -> Postgres.

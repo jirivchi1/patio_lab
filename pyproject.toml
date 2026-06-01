@@ -1,0 +1,29 @@
+# =============================================================================
+# Patio Lab — configuración de herramientas (de momento, solo ruff)
+# -----------------------------------------------------------------------------
+# Las dependencias de instalación viven en requirements.txt (más sencillo para
+# empezar y sin complicaciones de "instalación editable" en Windows). Aquí solo
+# configuramos ruff, nuestro linter + formateador.
+# =============================================================================
+
+[tool.ruff]
+# Longitud de línea. 100 es un buen equilibrio: más aire que el clásico 79.
+line-length = 100
+target-version = "py311"
+
+# Excluimos la carpeta de migraciones: ese código lo AUTOGENERA Alembic, no lo
+# escribimos a mano, así que no tiene sentido aplicarle nuestras reglas de estilo.
+extend-exclude = ["migrations"]
+
+[tool.ruff.lint]
+# Conjunto de reglas activadas:
+#   E, W -> errores y avisos de estilo (pycodestyle)
+#   F    -> errores reales detectados por pyflakes (variables sin usar, etc.)
+#   I    -> ordenar imports automáticamente (isort)
+#   B    -> "bugbear": patrones que suelen ser bugs
+#   UP   -> sugerencias para usar sintaxis moderna de Python
+select = ["E", "W", "F", "I", "B", "UP"]
+
+[tool.ruff.format]
+# Comillas dobles por defecto (estilo consistente, como hace Black).
+quote-style = "double"

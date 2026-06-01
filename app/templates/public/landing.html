@@ -1,0 +1,26 @@
+{# ===========================================================================
+   landing.html — la página de inicio pública.
+
+   "extends" dice: usa base.html como esqueleto. Luego rellenamos sus bloques.
+   En esta Fase (a) el contenido es estático: su único objetivo es demostrar que
+   la app arranca y se ve. En fases siguientes mostraremos aquí los próximos
+   eventos reales sacados de la base de datos.
+=========================================================================== #}
+{% extends "base.html" %}
+
+{# Sobrescribimos el título de la pestaña para esta página concreta. #}
+{% block title %}{{ config.BRAND_NAME }} — Comunidad y eventos en el campo{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <h1>Bienvenido a {{ config.BRAND_NAME }}</h1>
+    <p class="hero-subtitle">
+      Una comunidad que se reúne de verdad: charlas y talleres en el campo,
+      cerca de Elche, que terminan en barbacoa.
+    </p>
+    <p class="hero-note">
+      🚧 Estamos construyendo la plataforma. Esto es la Fase (a): la app ya
+      arranca y se ve. Pronto habrá comunidades, foro y eventos.
+    </p>
+  </section>
+{% endblock %}

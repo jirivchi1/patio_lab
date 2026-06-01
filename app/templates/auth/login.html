@@ -1,0 +1,43 @@
+{# ===========================================================================
+   login.html — formulario de inicio de sesión. Misma estructura que register.
+=========================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}Entrar — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="auth-card">
+    <h1>Entrar</h1>
+    <p class="auth-intro">Bienvenido de vuelta a Patio Lab.</p>
+
+    <form method="post" novalidate>
+      {{ form.hidden_tag() }}  {# token CSRF #}
+
+      <div class="field">
+        {{ form.email.label }}
+        {{ form.email(class="input") }}
+        {% for error in form.email.errors %}
+          <p class="field-error">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.password.label }}
+        {{ form.password(class="input") }}
+        {% for error in form.password.errors %}
+          <p class="field-error">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      {# El "recuérdame" es una casilla; va en línea con su etiqueta a la derecha. #}
+      <div class="field-check">
+        {{ form.remember() }}
+        {{ form.remember.label }}
+      </div>
+
+      {{ form.submit(class="btn") }}
+    </form>
+
+    <p class="auth-alt">¿No tienes cuenta? <a href="{{ url_for('auth.register') }}">Créala aquí</a>.</p>
+  </section>
+{% endblock %}

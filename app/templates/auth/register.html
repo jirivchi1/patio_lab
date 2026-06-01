@@ -1,0 +1,65 @@
+{# ===========================================================================
+   register.html — formulario de creación de cuenta.
+
+   El objeto `form` lo pasa el controlador (render_template("...", form=form)).
+   Cada campo se pinta en tres partes:
+     1) la etiqueta:   form.campo.label
+     2) el input:      form.campo(class="...")  -> WTForms genera el <input>
+     3) los errores:   recorremos form.campo.errors y los mostramos en rojo
+=========================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}Crear cuenta — {{ config.BRAND_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="auth-card">
+    <h1>Crear cuenta</h1>
+    <p class="auth-intro">Únete a la comunidad y apúntate a los eventos en la finca.</p>
+
+    {# method="post" envía los datos en el cuerpo de la petición (no en la URL).
+       novalidate desactiva la validación del navegador para ver SIEMPRE la nuestra
+       (la de WTForms), que es la que controlamos y traducimos al español. #}
+    <form method="post" novalidate>
+      {# hidden_tag() inserta el token CSRF oculto. SIN esto, Flask-WTF rechaza el
+         envío. Es la pieza de seguridad que evita que otra web envíe el formulario
+         en tu nombre. #}
+      {{ form.hidden_tag() }}
+
+      <div class="field">
+        {{ form.name.label }}
+        {{ form.name(class="input") }}
+        {% for error in form.name.errors %}
+          <p class="field-error">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.email.label }}
+        {{ form.email(class="input") }}
+        {% for error in form.email.errors %}
+          <p class="field-error">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.password.label }}
+        {{ form.password(class="input") }}
+        {% for error in form.password.errors %}
+          <p class="field-error">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.confirm.label }}
+        {{ form.confirm(class="input") }}
+        {% for error in form.confirm.errors %}
+          <p class="field-error">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      {{ form.submit(class="btn") }}
+    </form>
+
+    <p class="auth-alt">¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Entra aquí</a>.</p>
+  </section>
+{% endblock %}
